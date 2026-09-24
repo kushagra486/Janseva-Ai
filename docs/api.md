@@ -9,7 +9,7 @@ Auth: `Authorization: Bearer <Supabase access token>`, or in demo mode `X-Demo-R
 | Method | Path | Role | Purpose |
 |---|---|---|---|
 | GET | `/health` | any | Provider status, store kind, corpus size |
-| POST | `/v1/decode` | any | `{text}` or `{file_path}` (Storage bucket `notices`) plus `language` → fields, explanation, confidence, citations |
+| POST | `/v1/decode` | any | `{text}` or `{file_path}` (Storage bucket `janseva-notices`) plus `language` → fields, explanation, confidence, citations |
 | POST | `/v1/decode/upload` | any | Multipart `file` (image, PDF or text) plus `language` |
 | POST | `/v1/ask` | any | `{question, language?, stream?}`. With `stream: true` returns SSE: `event: citations`, then `data:` text pieces, then `event: done` |
 | GET | `/v1/schemes` | any | Scheme catalogue |

@@ -96,7 +96,7 @@ async def verify(report_id: str, after: UploadFile = File(...),
     if before is not None:
         before_bytes = await before.read()
     elif r.photo_path:
-        before_bytes, _ = await download_object("reports", r.photo_path)
+        before_bytes, _ = await download_object("janseva-reports", r.photo_path)
     else:
         raise HTTPException(422, "No before photo on file; please attach one")
     try:

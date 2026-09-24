@@ -19,7 +19,11 @@ type Deadline = {
 };
 
 const env = (k: string) => Deno.env.get(k) ?? "";
-const supabase = createClient(env("SUPABASE_URL"), env("SUPABASE_SERVICE_ROLE_KEY"));
+// .from() targets the "janseva" schema, not PostgREST's default "public" — this project's
+// database may hold other apps' tables under "public" too.
+const supabase = createClient(env("SUPABASE_URL"), env("SUPABASE_SERVICE_ROLE_KEY"), {
+  db: { schema: "janseva" },
+});
 const APP_URL = env("APP_URL") || "https://janseva.example";
 
 if (env("VAPID_PUBLIC_KEY") && env("VAPID_PRIVATE_KEY")) {

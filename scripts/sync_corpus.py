@@ -29,7 +29,10 @@ def main() -> None:
     key = os.environ["SUPABASE_SERVICE_KEY"]
     sb_headers = {"apikey": key, "Authorization": f"Bearer {key}",
                   "Content-Type": "application/json",
-                  "Prefer": "resolution=merge-duplicates,return=minimal"}
+                  "Prefer": "resolution=merge-duplicates,return=minimal",
+                  # Targets the "janseva" schema, not PostgREST's default "public" — this
+                  # project's database may hold other apps' tables under "public" too.
+                  "Accept-Profile": "janseva", "Content-Profile": "janseva"}
 
     with httpx.Client(timeout=60) as client:
         for f in sorted((ROOT / "data" / "services").glob("*.md")):

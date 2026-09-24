@@ -3,11 +3,19 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { SUPABASE_ANON_KEY, SUPABASE_URL, supabaseEnabled } from "../env";
 
-/** Server Supabase client bound to the request cookies, or null in demo mode. */
-export async function getServerSupabase(): Promise<SupabaseClient | null> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- no generated Database types
+type JansevaClient = SupabaseClient<any, "janseva">;
+
+/**
+ * Server Supabase client bound to the request cookies, or null in demo mode. `.from()`/`.rpc()`
+ * target the "janseva" schema (see lib/supabase/client.ts for why).
+ */
+export async function getServerSupabase(): Promise<JansevaClient | null> {
   if (!supabaseEnabled) return null;
   const store = await cookies();
-  return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- no generated Database types
+  return createServerClient<any, "janseva">(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    db: { schema: "janseva" },
     cookies: {
       getAll: () => store.getAll(),
       setAll: (list) => {

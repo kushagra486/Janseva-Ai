@@ -65,7 +65,7 @@ async def decode(req: DecodeRequest, user: User = Depends(current_user)):
     if not req.file_path:
         raise HTTPException(422, "Provide text or file_path")
     check_owned_path(user, req.file_path)
-    data, ctype = await download_object("notices", req.file_path)
+    data, ctype = await download_object("janseva-notices", req.file_path)
     return await _decode_bytes(data, ctype, req.language)
 
 

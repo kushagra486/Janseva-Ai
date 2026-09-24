@@ -55,7 +55,7 @@ export function ReportForm({ uploadAs }: { uploadAs: string | null }) {
       const supabase = getBrowserSupabase();
       if (photo && supabase && uploadAs) {
         const path = `${uploadAs}/${newId()}.${photo.name.split(".").pop() || "jpg"}`;
-        const { error: upErr } = await supabase.storage.from("reports").upload(path, photo, { contentType: photo.type });
+        const { error: upErr } = await supabase.storage.from("janseva-reports").upload(path, photo, { contentType: photo.type });
         if (!upErr) photo_path = path;
       }
       const res = await createReport({ text, category, location: loc, transcript, has_photo: Boolean(photo), photo_path });

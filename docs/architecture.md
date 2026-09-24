@@ -103,9 +103,11 @@ already passed.
 
 ## Storage layout
 
-Private buckets `notices`, `reports` and `sources`. Object paths start with the owner's user
-id (`<uid>/<file>`), and storage policies check the first folder. The AI service reads
-objects with the service key only after checking that the path belongs to the caller.
+Private buckets `janseva-notices`, `janseva-reports` and `janseva-sources`, prefixed so they
+cannot collide with another app's buckets on a shared Supabase project (see below). Object
+paths start with the owner's user id (`<uid>/<file>`), and storage policies check the first
+folder. The AI service reads objects with the service key only after checking that the path
+belongs to the caller.
 
 ## Stores
 
@@ -113,3 +115,20 @@ objects with the service key only after checking that the path belongs to the ca
 with the service key) implement the same interface. Because the service key bypasses RLS, the
 AI service enforces roles itself: `require_role`, ward checks, and ownership checks on
 verify and feedback.
+
+## Sharing a Supabase project with other apps
+
+JANSEVA's Supabase project can be shared with unrelated apps (each project has a free-tier
+cap of two). Everything JANSEVA owns is isolated so the two can never collide:
+
+| Shared resource | How JANSEVA stays isolated |
+|---|---|
+| Database schema | Every table, function and trigger lives in a dedicated `janseva` Postgres schema (`create schema janseva`), never `public`. `supabase/migrations/…_expose_schema.sql` exposes it to PostgREST *additively* — it reads the project's existing `pgrst.db_schemas` setting and only adds `janseva`, never removes `public` or another app's schema. The web app's Supabase clients (`lib/supabase/client.ts`, `lib/supabase/server.ts`) and the AI service's REST calls (`store/supabase.py`) all set `janseva` as their schema/profile so every query is scoped automatically. |
+| Postgres extensions | `vector` and `postgis` install into the `extensions` schema (this project's own convention — check what's already there with `select extname, nspname from pg_extension join pg_namespace on pg_namespace.oid = extnamespace` before assuming), never `public`. |
+| Storage buckets | Bucket ids are one global list per project (no schema concept). JANSEVA's are prefixed `janseva-notices` / `janseva-reports` / `janseva-sources`. |
+| `auth.users` (Supabase Auth) | Necessarily shared — there is one user pool per project. A user who signs up through either app becomes an authenticated user for both. JANSEVA's `on_auth_user_created` trigger only ever inserts into `janseva.profiles`, and its JWT claim is nested at `app_metadata.janseva.{role,ward}` (never a top-level `role`/`ward` key), so it can't overwrite or read a claim another app sets. |
+
+Before reusing a Supabase project for a second app, it's worth checking what's already there
+(`list_tables`, and a query against `pg_proc`/`pg_trigger` for name collisions) — the schema
+and bucket-prefix approach above avoids collisions by construction, but a security review of
+what any *other* app's own RLS policies allow is outside JANSEVA's control.

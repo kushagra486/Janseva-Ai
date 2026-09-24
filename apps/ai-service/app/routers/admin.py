@@ -29,7 +29,8 @@ async def _persist(doc: SourceDoc, chunks: list[IndexedChunk]) -> None:
         return
     base = s.supabase_url.rstrip("/") + "/rest/v1"
     h = {"apikey": s.supabase_service_key, "Authorization": f"Bearer {s.supabase_service_key}",
-         "Content-Type": "application/json"}
+         "Content-Type": "application/json", "Accept-Profile": "janseva",
+         "Content-Profile": "janseva"}
     async with httpx.AsyncClient(timeout=30) as client:
         r = await client.post(f"{base}/sources", params={"on_conflict": "slug"},
                               headers={**h, "Prefer": "resolution=merge-duplicates,"

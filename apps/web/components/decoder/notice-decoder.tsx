@@ -55,7 +55,7 @@ export function NoticeDecoder({ uploadAs }: { uploadAs: string | null }) {
     if (supabase && uploadAs) {
       const ext = file.name.split(".").pop() || "jpg";
       const path = `${uploadAs}/${newId()}.${ext}`;
-      const { error: upErr } = await supabase.storage.from("notices").upload(path, file, { contentType: file.type });
+      const { error: upErr } = await supabase.storage.from("janseva-notices").upload(path, file, { contentType: file.type });
       if (!upErr) inp = { kind: "file", file, path };
     }
     setInput(inp);

@@ -31,7 +31,7 @@ the model paths switch on automatically. See `apps/ai-service/.env.example` and
 1. **Supabase:** create a project, then `supabase link` and `supabase db push`
    (migrations), and run `supabase/seed.sql`. Deploy the reminder function with
    `supabase functions deploy send-reminders` and run `supabase/cron.sql`. Promote staff with
-   `select public.set_role('officer@…', 'officer', 'hazratganj');`.
+   `select janseva.set_role('officer@…', 'officer', 'hazratganj');`.
 2. **AI service:** build `apps/ai-service/Dockerfile` from the repo root and deploy it (a
    Hugging Face Space in Docker mode works, port 7860). Set `SUPABASE_URL`,
    `SUPABASE_SERVICE_KEY`, `SUPABASE_JWT_SECRET`, `GROQ_API_KEY` and `CORS_ORIGINS`. Load the

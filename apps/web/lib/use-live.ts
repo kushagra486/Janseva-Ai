@@ -21,7 +21,7 @@ export function useLive(tables: string[], refresh: () => void, pollMs = 5000) {
     }
     const channel = supabase.channel(`live:${key}`);
     for (const table of key.split(",")) {
-      channel.on("postgres_changes", { event: "*", schema: "public", table }, () => cb.current());
+      channel.on("postgres_changes", { event: "*", schema: "janseva", table }, () => cb.current());
     }
     channel.subscribe();
     return () => {

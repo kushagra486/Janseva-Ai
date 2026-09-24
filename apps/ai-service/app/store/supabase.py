@@ -29,8 +29,12 @@ class SupabaseStore:
 
     def __init__(self, url: str, key: str):
         self.base = url.rstrip("/") + "/rest/v1"
+        # Accept-Profile/Content-Profile pick the "janseva" schema (see the 000003 migration)
+        # rather than PostgREST's default "public" — this project's database may hold other
+        # apps' tables under "public" too, and this keeps every request scoped to JANSEVA's own.
         self.headers = {"apikey": key, "Authorization": f"Bearer {key}",
-                        "Content-Type": "application/json"}
+                        "Content-Type": "application/json", "Accept-Profile": "janseva",
+                        "Content-Profile": "janseva"}
 
     async def _req(self, method: str, path: str, *, params=None, json_body=None,
                    prefer: str | None = None):

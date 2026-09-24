@@ -33,7 +33,11 @@ export async function getSession(): Promise<Session> {
   const claims = data?.claims;
   if (!claims) return { userId: null, role: "citizen", demo: false };
   const { data: s } = await supabase.auth.getSession();
-  const role = (claims.app_metadata as { role?: Role } | undefined)?.role;
+  // Namespaced under app_metadata.janseva (not a top-level "role" key) so it can never
+  // collide with a claim another app on this Supabase project sets — see the sync_role_claims
+  // trigger in supabase/migrations.
+  const janseva = (claims.app_metadata as { janseva?: { role?: Role; ward?: string } } | undefined)?.janseva;
+  const role = janseva?.role;
   return {
     userId: claims.sub,
     role: role && ROLES.includes(role) ? role : "citizen",
