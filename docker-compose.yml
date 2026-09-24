@@ -1,0 +1,25 @@
+# Offline mode: local models, no data leaves the machine.
+#   docker compose up -d
+#   docker compose exec ollama ollama pull qwen2.5:7b
+#   docker compose exec ollama ollama pull bge-m3
+# Then run the web app with AI_SERVICE_URL=http://localhost:8000.
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports: ["11434:11434"]
+    volumes: [ollama:/root/.ollama]
+
+  ai-service:
+    build:
+      context: .
+      dockerfile: apps/ai-service/Dockerfile
+    ports: ["8000:7860"]
+    environment:
+      LLM_PROVIDERS: ollama
+      OLLAMA_URL: http://ollama:11434
+      EMBED_PROVIDER: ollama
+      CORS_ORIGINS: http://localhost:3000
+    depends_on: [ollama]
+
+volumes:
+  ollama:

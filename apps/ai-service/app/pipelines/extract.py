@@ -23,9 +23,8 @@ HI_MONTHS = {
 EN_MONTHS = {m: i for i, m in enumerate(
     ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"], 1)}
 
+# Most specific first: a Jal Kal bill also says "Nagar Nigam Lucknow" in its letterhead.
 AUTHORITIES = [
-    (r"नगर\s*निगम\s*,?\s*लखनऊ|लखनऊ\s*नगर\s*निगम|lucknow\s+(?:nagar\s+nigam|municipal\s+corporation)"
-     r"|nagar\s+nigam,?\s+lucknow", "Lucknow Nagar Nigam"),
     (r"जलकल\s*विभाग|jal\s*kal", "Jal Kal Vibhag, Lucknow"),
     (r"लखनऊ\s*विकास\s*प्राधिकरण|lucknow\s+development\s+authority|\bLDA\b",
      "Lucknow Development Authority"),
@@ -34,6 +33,8 @@ AUTHORITIES = [
     (r"यातायात\s*पुलिस|traffic\s+police|e-?challan", "Traffic Police, Uttar Pradesh"),
     (r"तहसील|tehsil|तहसीलदार|tehsildar", "Tehsil office"),
     (r"न्यायालय|court\s+of|district\s+court", "Court"),
+    (r"नगर\s*निगम\s*,?\s*लखनऊ|लखनऊ\s*नगर\s*निगम|lucknow\s+(?:nagar\s+nigam|municipal\s+corporation)"
+     r"|nagar\s+nigam,?\s+lucknow", "Lucknow Nagar Nigam"),
     (r"नगर\s*निगम|municipal\s+corporation|nagar\s+nigam", "Municipal Corporation"),
 ]
 

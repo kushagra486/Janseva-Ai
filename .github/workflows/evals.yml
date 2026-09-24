@@ -1,0 +1,32 @@
+name: Evals
+
+on:
+  push:
+    paths: ["apps/ai-service/**", "data/**", "evals/**"]
+  workflow_dispatch:
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    env:
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r apps/ai-service/requirements.txt
+      # Rules-only baseline always runs. With a GROQ_API_KEY secret it also runs with the model.
+      - name: Rules-only baseline
+        run: python evals/run_evals.py
+        env:
+          LLM_PROVIDERS: ""
+      - name: With Groq
+        if: ${{ env.GROQ_API_KEY != '' }}
+        run: python evals/run_evals.py
+        env:
+          LLM_PROVIDERS: groq
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: evals/results/
