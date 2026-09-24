@@ -1,0 +1,12 @@
+{"a": "Drain overflowing near the temple, dirty water on the road", "b": "नाली ओवरफ्लो, सड़क पर गंदा पानी", "category": "water_drainage", "meters": 8, "dup": true}
+{"a": "Big pothole on main road", "b": "Road pe bada gaddha hai, bike wale gir rahe hain", "category": "roads", "meters": 25, "dup": true}
+{"a": "Garbage not picked for 4 days", "b": "कूड़ा चार दिन से नहीं उठा", "category": "waste", "meters": 40, "dup": true}
+{"a": "Streetlight not working", "b": "street light kharab hai, andhera rehta hai", "category": "streetlights", "meters": 15, "dup": true}
+{"a": "Sewer overflowing outside the school gate", "b": "Sewer overflow near school gate, kids walking in dirty water", "category": "water_drainage", "meters": 90, "dup": true}
+{"a": "Pothole near the petrol pump crossing", "b": "Deep pothole at petrol pump crossing, accident risk", "category": "roads", "meters": 120, "dup": true}
+{"a": "Garbage dump near the park", "b": "Garbage dump near the park corner smelling badly", "category": "waste", "meters": 100, "dup": true}
+{"a": "Pothole on main road", "b": "Pothole on main road", "category": "roads", "meters": 400, "dup": false}
+{"a": "Drain blocked in lane 3", "b": "Water pipeline leaking in lane 7", "category": "water_drainage", "meters": 130, "dup": false}
+{"a": "Streetlight broken near bus stop", "b": "Streetlight flickering in the market", "category": "streetlights", "meters": 140, "dup": false}
+{"a": "Garbage near temple", "b": "Garbage near school", "category": "waste", "meters": 900, "dup": false}
+{"a": "Broken bench in park", "b": "Toilet in the park is locked and dirty", "category": "public_infra", "meters": 110, "dup": false}

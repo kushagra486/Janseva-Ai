@@ -1,0 +1,4 @@
+# Optional local OCR. Also needs the tesseract binary with the hin + eng language packs.
+pytesseract>=0.3.10
+opencv-python-headless>=4.9
+pypdfium2>=4.30

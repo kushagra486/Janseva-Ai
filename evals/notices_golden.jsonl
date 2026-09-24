@@ -1,0 +1,12 @@
+{"file": "01-lmc-property-tax-hi.txt", "notice_type": "property_tax", "authority": "Lucknow Nagar Nigam", "amount": 4860, "deadline": "2026-10-31"}
+{"file": "02-lmc-property-tax-en.txt", "notice_type": "property_tax", "authority": "Lucknow Nagar Nigam", "amount": 12340, "deadline": "2026-09-15"}
+{"file": "03-jalkal-water-hi.txt", "notice_type": "water_bill", "authority": "Jal Kal Vibhag, Lucknow", "amount": 2150, "deadline": "2026-11-20"}
+{"file": "04-uppcl-electricity-en.txt", "notice_type": "electricity_bill", "authority": "Madhyanchal Vidyut Vitran Nigam (UPPCL)", "amount": 3275, "deadline": "2026-10-12"}
+{"file": "05-echallan-en.txt", "notice_type": "traffic_challan", "authority": "Traffic Police, Uttar Pradesh", "amount": 1000, "deadline": "2026-11-30"}
+{"file": "06-lda-construction-hi.txt", "notice_type": "building_violation", "authority": "Lucknow Development Authority", "amount": null, "deadline": "2026-10-25"}
+{"file": "07-lmc-encroachment-hi.txt", "notice_type": "encroachment", "authority": "Lucknow Nagar Nigam", "amount": null, "deadline": "2026-10-10"}
+{"file": "08-lmc-property-tax-arrears-hi.txt", "notice_type": "property_tax", "authority": "Lucknow Nagar Nigam", "amount": 6410, "deadline": "2026-09-30"}
+{"file": "09-court-summons-en.txt", "notice_type": "court_summons", "authority": "Court", "amount": null, "deadline": "2026-11-14"}
+{"file": "10-lmc-property-tax-nodate-hi.txt", "notice_type": "property_tax", "authority": "Lucknow Nagar Nigam", "amount": 1975, "deadline": null}
+{"file": "11-uppcl-electricity-hi.txt", "notice_type": "electricity_bill", "authority": "Madhyanchal Vidyut Vitran Nigam (UPPCL)", "amount": 1142, "deadline": "2026-11-05"}
+{"file": "12-jalkal-water-en.txt", "notice_type": "water_bill", "authority": "Jal Kal Vibhag, Lucknow", "amount": 1800, "deadline": "2026-12-15"}

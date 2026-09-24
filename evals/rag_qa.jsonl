@@ -1,0 +1,38 @@
+{"q": "How do I get a birth certificate?", "source": "birth-certificate", "must": "crsorgi"}
+{"q": "birth certificate kaise banwayein?", "source": "birth-certificate", "must": "21 days"}
+{"q": "जन्म प्रमाण पत्र कैसे बनवाएँ?", "source": "birth-certificate", "must": "crsorgi"}
+{"q": "death certificate for my father", "source": "death-certificate", "must": "21 days"}
+{"q": "mrityu praman patra kaise milega", "source": "death-certificate", "must": "crsorgi"}
+{"q": "income certificate apply online", "source": "income-certificate", "must": "edistrict"}
+{"q": "आय प्रमाण पत्र कहाँ बनेगा?", "source": "income-certificate", "must": "Tehsildar"}
+{"q": "caste certificate for OBC", "source": "caste-certificate", "must": "edistrict"}
+{"q": "jati praman patra", "source": "caste-certificate", "must": "Lekhpal"}
+{"q": "domicile certificate documents", "source": "domicile-certificate", "must": "Aadhaar"}
+{"q": "niwas praman patra kaise banaye", "source": "domicile-certificate", "must": "edistrict"}
+{"q": "House tax online kaise pay karein?", "source": "property-tax-lucknow", "must": "lmc.up.nic.in"}
+{"q": "गृहकर कैसे जमा करें?", "source": "property-tax-lucknow", "must": "zonal"}
+{"q": "my property tax amount is wrong", "source": "property-tax-lucknow", "must": "objection"}
+{"q": "new water connection in Lucknow", "source": "water-connection-lucknow", "must": "Jal Kal"}
+{"q": "नया पानी कनेक्शन कैसे लें?", "source": "water-connection-lucknow", "must": "property tax"}
+{"q": "new electricity connection", "source": "electricity-connection", "must": "UPPCL"}
+{"q": "bijli ka bill galat aaya", "source": "electricity-connection", "must": "1912"}
+{"q": "ration card apply", "source": "ration-card", "must": "fcs.up.gov.in"}
+{"q": "राशन कार्ड कैसे बनेगा", "source": "ration-card", "must": "Aadhaar"}
+{"q": "old age pension for my mother aged 65", "source": "old-age-pension", "must": "sspy-up"}
+{"q": "vridhavastha pension", "source": "old-age-pension", "must": "60"}
+{"q": "Widow pension ke liye kya documents chahiye?", "source": "widow-pension", "must": "death certificate"}
+{"q": "विधवा पेंशन", "source": "widow-pension", "must": "sspy-up"}
+{"q": "marriage registration", "source": "marriage-registration", "must": "igrsup"}
+{"q": "shaadi ka certificate", "source": "marriage-registration", "must": "witnesses"}
+{"q": "shop licence in Lucknow", "source": "trade-licence-lucknow", "must": "renew"}
+{"q": "dukan ka license", "source": "trade-licence-lucknow", "must": "Nagar Nigam"}
+{"q": "building map approval", "source": "building-map-lda", "must": "architect"}
+{"q": "LDA notice for unauthorised construction", "source": "building-map-lda", "must": "compounding"}
+{"q": "change address in aadhaar", "source": "aadhaar-address-update", "must": "myaadhaar"}
+{"q": "aadhaar mein pata kaise badle", "source": "aadhaar-address-update", "must": "URN"}
+{"q": "file a complaint with the government", "source": "complaint-jansunwai", "must": "1076"}
+{"q": "jansunwai shikayat", "source": "complaint-jansunwai", "must": "jansunwai.up.nic.in"}
+{"q": "pay traffic challan", "source": "traffic-echallan", "must": "echallan.parivahan.gov.in"}
+{"q": "challan galat hai", "source": "traffic-echallan", "must": "virtual court"}
+{"q": "ayushman card kaise banaye", "source": "ayushman-card", "must": "beneficiary.nha.gov.in"}
+{"q": "free hospital treatment card", "source": "ayushman-card", "must": "Ayushman"}
