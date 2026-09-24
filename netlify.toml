@@ -1,0 +1,8 @@
+# Deploys apps/web (the Next.js PWA) from this pnpm monorepo.
+[build]
+  base = "apps/web"
+  publish = "apps/web/.next"
+  command = "cd ../.. && corepack enable && pnpm install --frozen-lockfile && pnpm --filter @janseva/web build"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
