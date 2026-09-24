@@ -1,0 +1,21 @@
+# Minimal Supabase CLI config for local development (`supabase start`).
+project_id = "janseva-ai"
+
+[api]
+port = 54321
+schemas = ["public", "storage"]
+
+[db]
+port = 54322
+major_version = 16
+
+[auth]
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000/**"]
+
+[auth.email]
+enable_signup = true
+enable_confirmations = false
+
+[functions.send-reminders]
+verify_jwt = false

@@ -1,0 +1,12 @@
+{
+  "name": "janseva-ai",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "pnpm --filter @janseva/web dev",
+    "build": "pnpm --filter @janseva/web build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test"
+  }
+}
