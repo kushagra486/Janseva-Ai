@@ -4,7 +4,7 @@ title_hi: मृत्यु प्रमाण पत्र
 department: Lucknow Nagar Nigam — Birth and Death Registration
 source_url: https://crsorgi.gov.in
 tags: death, certificate, mrityu, मृत्यु, प्रमाण पत्र
-last_checked: 2026-09
+last_checked: 2026-09-24 (verified live)
 ---
 # Death certificate
 

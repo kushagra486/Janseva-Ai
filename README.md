@@ -113,7 +113,9 @@ docs              architecture, API, privacy
 - **Officer actions go through the AI service,** so the same role checks and audit trail apply
   in demo mode and with Supabase.
 - **18 service guides and 15 schemes, not ~30.** Fees and links follow the official portals,
-  but must be re-verified before launch (see `data/README.md`).
+  but must be re-verified before launch (see `data/README.md`, which now also has a
+  verification log — a spot check against live portals caught and fixed one real bug: the
+  PM Ujjwala Yojana scheme had an income cap that doesn't actually exist).
 - **UI is English-only, not bilingual.** The blueprint's Hindi interface (`hi.json`, the
   language switcher, `next-intl`'s `hi` locale) was removed at the user's request. The
   service navigator still understands Hindi and Hinglish questions typed in, and the AI

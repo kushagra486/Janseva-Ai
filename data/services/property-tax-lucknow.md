@@ -4,7 +4,7 @@ title_hi: गृहकर (हाउस टैक्स) भुगतान — 
 department: Lucknow Nagar Nigam — Tax Department
 source_url: https://lmc.up.nic.in
 tags: property tax, house tax, grihkar, गृहकर, jalkar, जलकर, pay, bhugtan, नगर निगम, demand notice, online
-last_checked: 2026-09
+last_checked: 2026-09-24 (verified live)
 ---
 # Property tax (gṛhakar) in Lucknow
 

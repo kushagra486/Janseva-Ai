@@ -4,7 +4,7 @@ title_hi: नया बिजली कनेक्शन और बिल — U
 department: Madhyanchal Vidyut Vitran Nigam Ltd (UPPCL)
 source_url: https://www.uppcl.org
 tags: electricity, bijli, बिजली, connection, bill, uppcl, meter, 1912
-last_checked: 2026-09
+last_checked: 2026-09-24 (verified live)
 ---
 # Electricity connection and bills
 

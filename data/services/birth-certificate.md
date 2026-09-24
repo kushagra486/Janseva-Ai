@@ -4,7 +4,7 @@ title_hi: जन्म प्रमाण पत्र
 department: Lucknow Nagar Nigam — Birth and Death Registration
 source_url: https://crsorgi.gov.in
 tags: birth, certificate, janm, praman patra, जन्म, प्रमाण पत्र, baby, child
-last_checked: 2026-09
+last_checked: 2026-09-24 (verified live)
 ---
 # Birth certificate
 

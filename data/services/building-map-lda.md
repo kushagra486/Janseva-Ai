@@ -4,7 +4,7 @@ title_hi: भवन मानचित्र स्वीकृति — लख
 department: Lucknow Development Authority
 source_url: https://ldalucknow.in
 tags: building, map, naksha, नक्शा, construction, lda, demolition, sealing, notice
-last_checked: 2026-09
+last_checked: 2026-09-24 (verified live)
 ---
 # Building map approval
 
