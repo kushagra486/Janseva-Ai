@@ -1,8 +1,13 @@
 # Deploys apps/web (the Next.js PWA) from this pnpm monorepo.
+#
+# `base` sets Netlify's working directory for the whole build, so `publish` below is relative
+# to it (".next", not "apps/web/.next" — an earlier version of this file had that wrong, which
+# is why the first deploy attempt failed). `pnpm install` run from inside apps/web still
+# resolves and installs the whole workspace, since pnpm walks up to find pnpm-workspace.yaml.
 [build]
   base = "apps/web"
-  publish = "apps/web/.next"
-  command = "cd ../.. && corepack enable && pnpm install --frozen-lockfile && pnpm --filter @janseva/web build"
+  publish = ".next"
+  command = "corepack enable && pnpm install --frozen-lockfile && pnpm exec next build"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
