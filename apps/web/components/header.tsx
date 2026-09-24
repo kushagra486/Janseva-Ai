@@ -3,7 +3,6 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getSession } from "@/lib/session";
 import { HealthBadge } from "./health-badge";
-import { LocaleSwitcher } from "./locale-switcher";
 import { RoleSwitcher } from "./role-switcher";
 import { SignOutButton } from "./sign-out-button";
 
@@ -28,7 +27,7 @@ export async function Header() {
       <header className="sticky top-0 z-[1000] border-b border-line bg-bg/85 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2.5">
           <Link href="/" className="flex items-center gap-2 font-bold">
-            <span aria-hidden className="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-saffron to-green text-lg text-white">ज</span>
+            <span aria-hidden className="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-saffron to-green text-lg text-white">J</span>
             <span className="leading-tight">
               {t("common.appName")}
               <span className="block text-[11px] font-normal text-muted">{t("common.motto")}</span>
@@ -52,7 +51,6 @@ export async function Header() {
                 {t("common.signIn")}
               </Link>
             )}
-            <LocaleSwitcher />
           </div>
         </div>
         {staff.length > 0 && (

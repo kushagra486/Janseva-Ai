@@ -8,7 +8,7 @@ AI agents route those reports to the right office, and a human officer approves 
 
 | Module | What it does |
 |---|---|
-| **Sahayak** (understand) | Notice decoder (photo, PDF or text → plain Hindi/English, deadline, next steps), service navigator with cited answers, scheme finder (rules decide, AI explains), deadline reminders |
+| **Sahayak** (understand) | Notice decoder (photo, PDF or text → plain English, deadline, next steps), service navigator with cited answers (ask in English, Hindi or Hinglish), scheme finder (rules decide, AI explains), deadline reminders |
 | **Shikayat** (report) | Report by text, voice or photo with GPS. Agents classify, rate severity, merge duplicates, draft a plan, verify the fix |
 | **Prashasan** (act) | Officer dashboard: issue map, approval queue, SLA timers, ward analytics. Knowledge console for admins |
 
@@ -67,7 +67,7 @@ embeddings (`EMBED_PROVIDER=ollama`) are meant to close that gap.
 - `apps/ai-service`: `pytest` (26 tests: PII masking, extraction, schemes, and the full report
   lifecycle through the API) and `ruff`
 - `packages/shared`: contract tests that fail if the Zod enums drift from the Python schemas
-- `apps/web`: `tsc`, ESLint, Vitest (Hindi/English string parity), `next build`, and
+- `apps/web`: `tsc`, ESLint, Vitest, `next build`, and
   Playwright end-to-end tests of the demo script (`pnpm --filter @janseva/web e2e`)
 - `supabase/tests`: migrations applied to Postgres + PostGIS + pgvector, plus RLS assertions
   (citizens can't see each other's rows, officers stay in their ward, no self-promotion,
@@ -79,8 +79,7 @@ fails below the targets.
 ## Five-minute demo
 
 1. **Hook:** hold up a printed Nagar Nigam notice and ask the judges what it says.
-2. **Scan** (`/hi/decode`): the explanation appears in Hindi. Toggle to English, then tap
-   **याद दिलाएँ**.
+2. **Scan** (`/decode`): the explanation appears in plain English. Tap **Remind me**.
 3. **Ask** (`/services`): "Online kaise pay karein?" gives a cited answer with the official
    link.
 4. **Schemes:** tap "Fill as Sunita (62, widow)" to see matching schemes with reasons and a
@@ -93,7 +92,7 @@ fails below the targets.
 ## Project structure
 
 ```
-apps/web          Next.js 16 PWA (next-intl hi/en, Tailwind, Leaflet/OSM, Recharts)
+apps/web          Next.js 16 PWA (English UI, Tailwind, Leaflet/OSM, Recharts)
 apps/ai-service   FastAPI: gateway, OCR, extraction, RAG, schemes, agents
 packages/shared   Zod API contracts
 supabase          migrations (schema + RLS), seed, send-reminders function, cron, SQL tests
@@ -115,6 +114,11 @@ docs              architecture, API, privacy
   in demo mode and with Supabase.
 - **18 service guides and 15 schemes, not ~30.** Fees and links follow the official portals,
   but must be re-verified before launch (see `data/README.md`).
+- **UI is English-only, not bilingual.** The blueprint's Hindi interface (`hi.json`, the
+  language switcher, `next-intl`'s `hi` locale) was removed at the user's request. The
+  service navigator still understands Hindi and Hinglish questions typed in, and the AI
+  service can still produce a Hindi explanation of a notice via its `language` parameter —
+  only the app's own chrome and the decoder's output are fixed to English now.
 
 ## Not built yet (stretch)
 

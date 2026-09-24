@@ -2,7 +2,7 @@
 // Pages are network-first with a cache fallback, so saved notices and deadlines (kept in
 // localStorage) still open offline. API calls are never cached.
 const CACHE = "janseva-v1";
-const PRECACHE = ["/hi", "/en", "/hi/deadlines", "/en/deadlines", "/icon.svg"];
+const PRECACHE = ["/en", "/en/deadlines", "/icon.svg"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).catch(() => {}));
@@ -45,13 +45,13 @@ self.addEventListener("fetch", (event) => {
           caches.open(CACHE).then((c) => c.put(req, copy));
           return res;
         })
-        .catch(() => caches.match(req).then((hit) => hit || caches.match(url.pathname.startsWith("/en") ? "/en/deadlines" : "/hi/deadlines"))),
+        .catch(() => caches.match(req).then((hit) => hit || caches.match("/en/deadlines"))),
     );
   }
 });
 
 self.addEventListener("push", (event) => {
-  let data = { title: "JANSEVA", body: "", url: "/hi/deadlines" };
+  let data = { title: "JANSEVA", body: "", url: "/en/deadlines" };
   try {
     data = { ...data, ...event.data.json() };
   } catch {}
@@ -62,5 +62,5 @@ self.addEventListener("push", (event) => {
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  event.waitUntil(self.clients.openWindow(event.notification.data?.url || "/hi"));
+  event.waitUntil(self.clients.openWindow(event.notification.data?.url || "/en"));
 });

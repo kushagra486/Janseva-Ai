@@ -1,8 +1,8 @@
 {
   "common": {
     "appName": "JANSEVA AI",
-    "motto": "सरकार की बात, आपकी भाषा में।",
-    "mottoSub": "The government's word, in your language.",
+    "motto": "The government's word, in your language.",
+    "mottoSub": "Government notices and services, explained simply.",
     "disclaimer": "JANSEVA gives guidance, not legal advice. Always check the original notice and the official source.",
     "loading": "Working…",
     "error": "Something went wrong.",
@@ -20,7 +20,7 @@
       "officer": "Officer",
       "admin": "Admin"
     },
-    "language": "हिन्दी",
+    "language": "English",
     "offline": "You are offline. Saved notices and deadlines still work.",
     "aiStatus": "AI status",
     "rulesMode": "Working without a model (rules only)"
@@ -107,7 +107,7 @@
     "sources": "Sources",
     "suggestions": [
       "How do I get a birth certificate?",
-      "नया पानी कनेक्शन कैसे लें?",
+      "How do I get a new water connection?",
       "House tax online kaise pay karein?",
       "Widow pension ke liye kya documents chahiye?"
     ],
@@ -175,7 +175,7 @@
   },
   "report": {
     "title": "Report a problem",
-    "subtitle": "जन की आवाज़, सेवा का साथ।",
+    "subtitle": "The people's voice, backed by service.",
     "category": "What kind of problem?",
     "categories": {
       "waste": "Garbage",

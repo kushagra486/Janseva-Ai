@@ -5,16 +5,14 @@ test.beforeEach(async ({ context }) => {
   await context.addInitScript(() => window.localStorage.setItem("janseva.consent.v1", "test"));
 });
 
-test("scan a sample notice, switch language, set a reminder", async ({ page }) => {
-  await page.goto("/hi/decode");
-  await page.getByRole("button", { name: "नमूना नोटिस आज़माएँ" }).click();
-  await expect(page.getByText("आपको ₹4,860")).toBeVisible();
-  await expect(page.getByText("31 अक्टूबर 2026 तक")).toBeVisible();
-  await page.getByRole("button", { name: "English", exact: true }).click();
+test("scan a sample notice and set a reminder", async ({ page }) => {
+  await page.goto("/en/decode");
+  await page.getByRole("button", { name: "Try a sample notice" }).click();
   await expect(page.getByText("You owe ₹4,860 for 2026-27")).toBeVisible();
-  await page.getByRole("button", { name: "याद दिलाएँ" }).click();
-  await page.goto("/hi/deadlines");
-  await expect(page.getByText("दिन बाकी").first()).toBeVisible();
+  await expect(page.getByText(/31 October 2026/)).toBeVisible();
+  await page.getByRole("button", { name: "Remind me" }).click();
+  await page.goto("/en/deadlines");
+  await expect(page.getByText("days left").first()).toBeVisible();
 });
 
 test("ask a Hinglish question and get a cited answer", async ({ page }) => {

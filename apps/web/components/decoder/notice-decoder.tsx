@@ -1,7 +1,7 @@
 "use client";
-import type { DecodeResponse, Lang } from "@janseva/shared";
+import type { DecodeResponse } from "@janseva/shared";
 import { AlertTriangle, BellPlus, Camera, CheckCircle2, ExternalLink, FileText, ShieldCheck } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { saveDeadline } from "@/app/actions";
 import { ReadAloud } from "@/components/read-aloud";
@@ -19,29 +19,26 @@ const FIELD_ORDER = ["notice_type", "authority", "amount", "deadline", "penalty"
 export function NoticeDecoder({ uploadAs }: { uploadAs: string | null }) {
   const t = useTranslations("decode");
   const c = useTranslations("common");
-  const locale = useLocale() as Lang;
-  const [lang, setLang] = useState<Lang>(locale);
   const [text, setText] = useState("");
   const [input, setInput] = useState<Input | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [results, setResults] = useState<Partial<Record<Lang, DecodeResponse>>>({});
+  const [result, setResult] = useState<DecodeResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState<"saved" | "none" | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const result = results[lang];
 
   useEffect(() => () => void (preview && URL.revokeObjectURL(preview)), [preview]);
 
-  async function run(inp: Input, l: Lang) {
+  async function run(inp: Input) {
     setBusy(true);
     setError(null);
     try {
       let r: DecodeResponse;
-      if (inp.kind === "text") r = await decodeText(inp.text, l);
-      else if (inp.path) r = await decodeFilePath(inp.path, l);
-      else r = await decodeFile(inp.file, l);
-      setResults((prev) => ({ ...prev, [l]: r }));
+      if (inp.kind === "text") r = await decodeText(inp.text, "en");
+      else if (inp.path) r = await decodeFilePath(inp.path, "en");
+      else r = await decodeFile(inp.file, "en");
+      setResult(r);
       localNotices.add({ id: newId(), savedAt: new Date().toISOString(), decoded: r });
     } catch (e) {
       setError(e instanceof Error ? e.message : c("error"));
@@ -62,23 +59,18 @@ export function NoticeDecoder({ uploadAs }: { uploadAs: string | null }) {
       if (!upErr) inp = { kind: "file", file, path };
     }
     setInput(inp);
-    setResults({});
+    setResult(null);
     setSaved(null);
-    await run(inp, lang);
+    await run(inp);
   }
 
   async function onText(value: string) {
     const inp: Input = { kind: "text", text: value };
     setInput(inp);
-    setResults({});
+    setResult(null);
     setSaved(null);
     setPreview(null);
-    await run(inp, lang);
-  }
-
-  async function switchLang(l: Lang) {
-    setLang(l);
-    if (input && !results[l]) await run(input, l);
+    await run(inp);
   }
 
   async function remind() {
@@ -165,18 +157,6 @@ export function NoticeDecoder({ uploadAs }: { uploadAs: string | null }) {
       {result && (
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm text-muted">{t("explainIn")}:</span>
-            {(["hi", "en"] as const).map((l) => (
-              <button
-                key={l}
-                type="button"
-                onClick={() => switchLang(l)}
-                aria-pressed={lang === l}
-                className={`min-h-10 rounded-lg border px-3 text-sm ${lang === l ? "border-saffron bg-saffron/15 text-saffron" : "border-line"}`}
-              >
-                {l === "hi" ? "हिन्दी" : "English"}
-              </button>
-            ))}
             <span className="ml-auto flex items-center gap-2 text-sm text-muted">
               {t("confidence")} <ConfidenceBar value={result.confidence} />
             </span>
@@ -205,7 +185,7 @@ export function NoticeDecoder({ uploadAs }: { uploadAs: string | null }) {
               <Button onClick={remind} disabled={saved === "saved"}>
                 {saved === "saved" ? <CheckCircle2 className="size-5" /> : <BellPlus className="size-5" />} {t("remindMe")}
               </Button>
-              <ReadAloud text={spoken} lang={lang} labels={{ play: t("readAloud"), stop: t("stop") }} />
+              <ReadAloud text={spoken} lang="en" labels={{ play: t("readAloud"), stop: t("stop") }} />
             </div>
             {saved === "saved" && <p className="text-sm text-green">{t("reminderSaved")}</p>}
             {saved === "none" && <p className="text-sm text-warn">{t("noDeadline")}</p>}
