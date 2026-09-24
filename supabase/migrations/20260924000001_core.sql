@@ -201,14 +201,16 @@ create table janseva.schemes (
   source_id  uuid references janseva.sources on delete set null
 );
 
--- search_path is pinned to (janseva, extensions) rather than left empty: the <=> operator
--- comes from pgvector in "extensions". Both schemas are fixed and fully under this
--- migration's control, which is what actually defends against search-path hijacking — an
--- attacker would need write access to one of these two schemas, not just any schema on a
--- mutable default path.
+-- search_path is pinned to (janseva, extensions, public) rather than left empty or mutable:
+-- the <=> operator comes from pgvector, normally in "extensions". "public" is included too
+-- because some Postgres images (e.g. this repo's CI, which uses the postgis/postgis Docker
+-- image) pre-install PostGIS into "public" rather than "extensions" — this migration doesn't
+-- assume which. All three schemas are ones this project's own account controls, which is
+-- what actually defends against search-path hijacking — an attacker would need write access
+-- to one of them, not just any schema on a mutable default path.
 create or replace function janseva.match_doc_chunks(query_embedding vector(1024), match_count int default 5)
 returns table (id uuid, source_id uuid, content text, similarity float)
-language sql stable security definer set search_path = janseva, extensions as $$
+language sql stable security definer set search_path = janseva, extensions, public as $$
   select c.id, c.source_id, c.content, 1 - (c.embedding <=> query_embedding) as similarity
     from janseva.doc_chunks c
    where c.embedding is not null
@@ -304,12 +306,13 @@ create table janseva.report_feedback (
   created_at timestamptz not null default now()
 );
 
--- Same reasoning as match_doc_chunks: st_setsrid/st_makepoint/st_dwithin/st_distance come
--- from PostGIS in "extensions".
+-- Same reasoning as match_doc_chunks: st_setsrid/st_makepoint/st_dwithin/st_distance and the
+-- geography type come from PostGIS, in "extensions" on this project but "public" on some
+-- Postgres images — see the comment there.
 create or replace function janseva.nearby_open_clusters(
   p_lat double precision, p_lng double precision, p_radius_m double precision, p_category text)
 returns table (id uuid, distance_m double precision, embedding text)
-language sql stable security definer set search_path = janseva, extensions as $$
+language sql stable security definer set search_path = janseva, extensions, public as $$
   select c.id,
          st_distance(c.centroid, st_setsrid(st_makepoint(p_lng, p_lat), 4326)::geography),
          c.embedding::text
