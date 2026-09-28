@@ -19,3 +19,5 @@ playwright-report/
 test-results/
 .DS_Store
 .netlify/
+.open-next/
+.wrangler/
