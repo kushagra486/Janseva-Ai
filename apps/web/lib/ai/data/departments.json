@@ -1,0 +1,7 @@
+[
+  {"id": "lmc-swm", "name": "Nagar Nigam — Solid Waste Management", "name_hi": "नगर निगम — ठोस अपशिष्ट प्रबंधन", "categories": ["waste"], "sla_hours": 48},
+  {"id": "jalkal", "name": "Jal Kal Vibhag", "name_hi": "जलकल विभाग", "categories": ["water_drainage"], "sla_hours": 72},
+  {"id": "lmc-civil", "name": "Nagar Nigam — Civil Works (Roads)", "name_hi": "नगर निगम — सिविल (सड़क)", "categories": ["roads"], "sla_hours": 168},
+  {"id": "lmc-lighting", "name": "Nagar Nigam — Street Lighting", "name_hi": "नगर निगम — मार्ग प्रकाश", "categories": ["streetlights"], "sla_hours": 72},
+  {"id": "lmc-infra", "name": "Nagar Nigam — Public Infrastructure", "name_hi": "नगर निगम — सार्वजनिक संरचना", "categories": ["public_infra"], "sla_hours": 168}
+]

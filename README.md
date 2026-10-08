@@ -15,66 +15,42 @@ AI agents route those reports to the right office, and a human officer approves 
 ## Run it locally (demo mode, no accounts or keys needed)
 
 ```bash
-pnpm install && pip install -r apps/ai-service/requirements.txt
-(cd apps/ai-service && uvicorn app.main:app --port 8000) &
+pnpm install
 pnpm dev   # http://localhost:3000
 ```
 
-Demo mode starts with an in-memory store seeded with a few Lucknow issues and a role switcher
-in the header (Citizen / Officer / Admin). With no model configured it runs on deterministic
-rules. Add `GROQ_API_KEY` (hosted), or run Ollama (`docker compose up`, fully offline), and
-the model paths switch on automatically. See `apps/ai-service/.env.example` and
-`apps/web/.env.example`.
+Demo mode starts with a role switcher in the header (Citizen / Officer / Admin) and, without
+Supabase configured, an in-memory-equivalent flow with no persistence. With no `GROQ_API_KEY`
+it runs on deterministic rules; add the key (`apps/web/.env.local`) and the model paths switch
+on automatically. See `apps/web/.env.example`.
 
 ## Production setup
+
+Everything — web app and AI logic alike — is one Next.js app (`apps/web`), deployed as a single
+Cloudflare Worker via `@opennextjs/cloudflare`. There is no separate AI backend to deploy.
 
 1. **Supabase:** create a project, then `supabase link` and `supabase db push`
    (migrations), and run `supabase/seed.sql`. Deploy the reminder function with
    `supabase functions deploy send-reminders` and run `supabase/cron.sql`. Promote staff with
    `select janseva.set_role('officer@…', 'officer', 'hazratganj');`.
-2. **AI service:** build `apps/ai-service/Dockerfile` from the repo root and deploy it (a
-   Hugging Face Space in Docker mode works, port 7860). Set `SUPABASE_URL`,
-   `SUPABASE_SERVICE_KEY`, `SUPABASE_JWT_SECRET`, `GROQ_API_KEY` and `CORS_ORIGINS`. Load the
-   corpus with `python scripts/sync_corpus.py`.
-3. **Web app:** deploy `apps/web` to Vercel with `AI_SERVICE_URL`,
-   `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and
-   `NEXT_PUBLIC_VAPID_PUBLIC_KEY`.
-
-## Measured
-
-`python evals/run_evals.py` in rules-only mode (no model), which is the floor the demo can
-never drop below:
-
-| Metric | Set | Result | Target |
-|---|---|---|---|
-| Notice field accuracy (type, authority, amount, deadline) | 12 notices | 100% | ≥ 90% |
-| Retrieval: correct guide ranked first | 38 questions (Hindi, English, Hinglish) | 100% | — |
-| Answers with a citation | 38 questions | 100% | 100% |
-| Answer contains the key fact | 38 questions | 58% (extractive fallback) | ≥ 85% with a model |
-| Duplicate detection precision / recall | 12 report pairs | 100% / 71% | ≥ 80% precision |
-| Decode latency, rules path | 12 notices | < 10 ms | < 8 s hosted |
-
-**Read these numbers with care.** The sample notices and question sets were written alongside
-the extractor, so they show that the pipeline works, not how accurate it is on real notices. The
-blueprint's golden set is 30 real, labelled notices and 50 graded Q&A pairs. Collecting those
-is the most valuable next step. Model-mode numbers need a `GROQ_API_KEY`, and CI runs them
-automatically when the secret is set. Duplicate recall with the offline hash embeddings is
-limited for reports worded differently in Hindi and English more than 50 m apart. BGE-M3
-embeddings (`EMBED_PROVIDER=ollama`) are meant to close that gap.
+2. **Web app + AI:** `cd apps/web && npx opennextjs-cloudflare build && npx wrangler deploy`.
+   Set `GROQ_API_KEY`, `SUPABASE_SERVICE_KEY`, `NEXT_PUBLIC_SUPABASE_URL` and
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY` as Worker secrets/vars (`wrangler secret put ...`).
 
 ## Tests and CI
 
-- `apps/ai-service`: `pytest` (26 tests: PII masking, extraction, schemes, and the full report
-  lifecycle through the API) and `ruff`
-- `packages/shared`: contract tests that fail if the Zod enums drift from the Python schemas
-- `apps/web`: `tsc`, ESLint, Vitest, `next build`, and
-  Playwright end-to-end tests of the demo script (`pnpm --filter @janseva/web e2e`)
+- `packages/shared`: contract tests that fail if the Zod enums drift between the two apps
+- `apps/web`: `tsc`, ESLint, Vitest (including unit tests for the ported PII masking, field
+  extraction and scheme-rules logic in `lib/ai/`), `next build`, and Playwright end-to-end
+  tests of the demo script (`pnpm --filter @janseva/web e2e`)
 - `supabase/tests`: migrations applied to Postgres + PostGIS + pgvector, plus RLS assertions
   (citizens can't see each other's rows, officers stay in their ward, no self-promotion,
   append-only audit log)
 
-`.github/workflows/ci.yml` runs all of these on every push. `evals.yml` runs the evals and
-fails below the targets.
+`.github/workflows/ci.yml` runs all of these on every push. The golden evaluation sets in
+`evals/*.jsonl` (notice extraction, Q&A, duplicate detection) predate this port and no longer
+have a runner — `evals/run_evals.py` imported the deleted Python `ai-service` directly. They're
+kept as fixtures for a future TS evals harness rather than deleted outright.
 
 ## Five-minute demo
 
@@ -92,12 +68,13 @@ fails below the targets.
 ## Project structure
 
 ```
-apps/web          Next.js 16 PWA (English UI, Tailwind, Leaflet/OSM, Recharts)
-apps/ai-service   FastAPI: gateway, OCR, extraction, RAG, schemes, agents
+apps/web          Next.js 16 PWA + AI logic (lib/ai/): gateway, extraction, RAG, schemes, agents
+                  — deployed as one Cloudflare Worker, no separate backend
 packages/shared   Zod API contracts
 supabase          migrations (schema + RLS), seed, send-reminders function, cron, SQL tests
-data              service guides, scheme rules, sample notices, departments, wards
-evals             golden sets and run_evals.py
+data              service guides, scheme rules, sample notices, departments, wards (source;
+                  apps/web/lib/ai/data/ holds the bundled copy generated from this)
+evals             golden sets (fixtures only — see "Tests and CI")
 docs              architecture, API, privacy
 ```
 
@@ -110,8 +87,14 @@ docs              architecture, API, privacy
   own PWA guide. Serwist needs the webpack build.
 - **No shadcn CLI.** The small component set lives in `components/ui.tsx` in the same style.
   Framer Motion and React Hook Form were left out to keep the bundle small on low-end phones.
-- **Officer actions go through the AI service,** so the same role checks and audit trail apply
-  in demo mode and with Supabase.
+- **The standalone FastAPI AI service was retired and its logic ported into `apps/web/lib/ai/`
+  as native Next.js API routes**, so the whole app deploys as one Cloudflare Worker with no
+  separate backend to host. The civic-report pipeline (intake → investigator → cluster →
+  planner) was already a single synchronous call chain, not real async agent orchestration, so
+  it ported faithfully; OCR (tesseract) was replaced with sending the photo to Groq's vision
+  model directly (Workers can't run native OCR binaries); the before/after photo verifier and
+  the hash-based retrieval embedding were dropped (pure keyword retrieval remains) since neither
+  has a straightforward Workers equivalent — see `docs/architecture.md`.
 - **18 service guides and 15 schemes, not ~30.** Fees and links follow the official portals,
   but must be re-verified before launch (see `data/README.md`, which now also has a
   verification log — a spot check against live portals caught and fixed one real bug: the

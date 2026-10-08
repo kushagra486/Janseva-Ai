@@ -1,0 +1,10 @@
+[
+  {"id": "hazratganj", "name": "Hazratganj", "lat": 26.8506, "lng": 80.9462},
+  {"id": "aminabad", "name": "Aminabad", "lat": 26.8435, "lng": 80.9310},
+  {"id": "chowk", "name": "Chowk", "lat": 26.8687, "lng": 80.9110},
+  {"id": "aliganj", "name": "Aliganj", "lat": 26.8960, "lng": 80.9420},
+  {"id": "gomti-nagar", "name": "Gomti Nagar", "lat": 26.8565, "lng": 81.0060},
+  {"id": "indira-nagar", "name": "Indira Nagar", "lat": 26.8800, "lng": 80.9960},
+  {"id": "alambagh", "name": "Alambagh", "lat": 26.8150, "lng": 80.9020},
+  {"id": "rajajipuram", "name": "Rajajipuram", "lat": 26.8420, "lng": 80.8800}
+]

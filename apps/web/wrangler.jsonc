@@ -10,5 +10,14 @@
   },
   "observability": {
     "enabled": true
+  },
+  "vars": {
+    // Points server actions (app/actions.ts, via lib/ai-server.ts) back at this same Worker's
+    // own /api/ai routes — the AI logic runs natively here now, not in a separate service.
+    "AI_SERVICE_URL": "https://janseva-ai-web.janseva-web.workers.dev/api/ai",
+    // llama-3.3-70b-versatile (the original default) is no longer served by Groq; gpt-oss-120b
+    // is a current chat+JSON-mode model. No vision-capable model is available on this account
+    // as of this deploy, so the photo-decode path degrades gracefully (see lib/ai/groq.ts).
+    "GROQ_MODEL": "openai/gpt-oss-120b"
   }
 }

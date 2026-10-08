@@ -14,8 +14,8 @@ browser's local storage.
 
 | Safeguard | Where |
 |---|---|
-| Aadhaar, Aadhaar VID, phone, PAN and email masked (including Devanagari digits) before any model call, and stored masked | `apps/ai-service/app/privacy/pii_mask.py`, applied in the decode, ask and triage paths |
-| Hosted vision OCR, which would send the raw photo, is opt-in and off by default | `ALLOW_VISION_FALLBACK` |
+| Aadhaar, Aadhaar VID, phone, PAN and email masked (including Devanagari digits) before any model call, and stored masked | `apps/web/lib/ai/pii.ts`, applied in the decode, ask and triage paths |
+| Photographed notices are sent to Groq's hosted vision model to transcribe (Cloudflare Workers can't run local OCR). This is no longer opt-in — it's the only path for a photo; pasted text never leaves this trade-off path | `lib/ai/groq.ts`'s `visionReadNotice` |
 | Private storage buckets; paths are owner-prefixed and policed | `supabase/migrations/…_rls.sql` |
 | Row-level security on every table: citizens see their own rows, officers their ward, admins everything | same, tested by `supabase/tests/rls_test.sql` in CI |
 | Roles can only be changed by an admin or the service role | `guard_profile_update` trigger |
